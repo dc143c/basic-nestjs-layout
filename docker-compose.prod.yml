@@ -1,0 +1,33 @@
+version: "3"
+services:
+  nest-basic-layout-prod:
+    container_name: nest-basic-layout-production
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - nms
+    links:
+      - db
+      - nms
+    networks:
+      - nest-basic-layout-network
+  db:
+    image: postgres:12.2
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - nest-basic-layout-network
+
+networks:
+  nest-basic-layout-network:
+    driver: bridge
